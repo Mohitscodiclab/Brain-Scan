@@ -121,13 +121,32 @@
   const okBtn = document.getElementById('okBtn');
   const againBtn = document.getElementById('againBtn');
 
+  // more dramatic messages including quantum/crypto lines
   const MESSAGES = [
     "Reading your brain waves...",
-    "Scanning thought patterns...",
+    "Scanning thought templates...",
     "Decoding neural activity...",
-    "Synchronizing with your mind...",
-    "Calculating probabilities...",
+    "Engaging quantum correlator…",
+    "Mapping entangled memory nodes…",
+    "Cracking probabilistic keyspace (simulated)...",
+    "Cross-checking against cached patterns...",
+    "Optimizing guess confidence...",
+    "Calibrating 256-bit decryption heuristic...",
     "Almost there..."
+  ];
+
+  const HINTS = [
+    "Analyzing synaptic patterns…",
+    "Tuning into short-term memory…",
+    "Filtering noise from thoughts…",
+    "Matching templates to choices…",
+    "Entangling probability vectors…",
+    "Quantum entangler engaged…",
+    "Running simulated 256-bit crypto check…",
+    "Brute-forcing confidence matrix (simulated)…",
+    "Optimizing guess confidence…",
+    "Synchronizing with your mental clock…",
+    "Rebalancing probability amplitudes…"
   ];
 
   let messageIndex = 0;
@@ -137,8 +156,13 @@
   let targetNumber = null;
   let surpriseMode = false;
 
+  // control variables to tune "realism"
+  const SLOWDOWN_THRESHOLD = 80; // after this percent we slow more
+  const LONG_PAUSE_PROB = 0.18;  // chance of a long dramatic pause
+  const LONG_PAUSE_MIN = 600;    // ms
+  const LONG_PAUSE_MAX = 1500;   // ms
+
   function startMindRead(guessed) {
-    // setup
     targetNumber = guessed;
     surpriseMode = false;
     readBtn.disabled = true;
@@ -151,23 +175,20 @@
     modalStatus.textContent = "";
     hintText.textContent = "Initializing neural link…";
 
-    // start typing messages and progress
     startTypingLoop();
     startProgressLoop();
   }
 
   function startTypingLoop() {
-    // clears previous timer
     if (typingTimer) { clearTimeout(typingTimer); typingTimer = null; }
-    // type current message with a typing effect, then schedule next
     const msg = MESSAGES[messageIndex];
     typeText(modalStatus, msg, 0, 25, () => {
-      // small pause with message fully displayed then move to next.
+      // longer pause when message references quantum/crypto to add drama
+      const extraPause = /quantum|256|decryption|entangler|brute/i.test(msg) ? 900 : 600;
       typingTimer = setTimeout(() => {
         messageIndex = (messageIndex + 1) % MESSAGES.length;
-        // only continue updating if overlay is visible
         if (overlay.style.display === 'flex') startTypingLoop();
-      }, 800);
+      }, extraPause);
     });
   }
 
@@ -181,53 +202,96 @@
   }
 
   function startProgressLoop() {
-    // non-linear, random-ish increments for fun
+    // we implement non-linear and stage-based pacing
     const tick = () => {
+      // if overlay closed, stop
+      if (overlay.style.display !== 'flex') return;
+
+      // dramatic long pause occasionally
+      if (Math.random() < chanceOfLongPause()) {
+        const longDelay = randInt(LONG_PAUSE_MIN, LONG_PAUSE_MAX);
+        // show a dramatic hint during pause
+        hintText.textContent = randomHint();
+        progressTimer = setTimeout(() => {
+          // continue after pause
+          if (overlay.style.display === 'flex') tick();
+        }, longDelay);
+        return;
+      }
+
       if (currentPercent >= 100) {
+        // add a final dramatic pause before revealing result
         finishMindRead();
         return;
       }
 
-      // choose a step biased to be small but occasionally bigger
       const r = Math.random();
       let step;
-      if (currentPercent < 60) {
-        // faster at start
-        step = (r < 0.7) ? randInt(1,4) : randInt(4,10);
-      } else if (currentPercent < 88) {
-        step = (r < 0.8) ? randInt(1,3) : randInt(3,6);
+
+      if (currentPercent < 40) {
+        // quick start
+        step = (r < 0.8) ? randInt(2,6) : randInt(6,12);
+      } else if (currentPercent < 60) {
+        step = (r < 0.75) ? randInt(1,4) : randInt(3,7);
+      } else if (currentPercent < SLOWDOWN_THRESHOLD) {
+        step = (r < 0.7) ? randInt(1,3) : randInt(2,5);
       } else {
-        step = randInt(1,2); // slow down near end
+        // after threshold, much slower and more cautious
+        step = (r < 0.85) ? randInt(0,1) : randInt(1,2);
       }
-      currentPercent = Math.min(100, currentPercent + step);
-      progressInner.style.width = currentPercent + '%';
-      percentText.textContent = currentPercent + '%';
 
-      // occasionally change hint text for fun
-      if (Math.random() < 0.25) {
+      // ensure tiny jitter so it doesn't feel robotic
+      if (step === 0 && Math.random() < 0.4) {
+        // a small "no change" tick that still updates hint
         hintText.textContent = randomHint();
+      } else {
+        currentPercent = Math.min(100, currentPercent + step);
+        progressInner.style.width = currentPercent + '%';
+        percentText.textContent = currentPercent + '%';
       }
 
-      // variable delay for realism
-      const delay = randInt(30, 220);
+      // more likely to change hint as we advance
+      if (Math.random() < 0.28) hintText.textContent = randomHint();
+
+      // variable delay: much larger delays when near the end
+      let delay;
+      if (currentPercent < 60) {
+        delay = randInt(40, 200);
+      } else if (currentPercent < SLOWDOWN_THRESHOLD) {
+        delay = randInt(90, 260);
+      } else {
+        // after threshold take noticeably longer to move each percent
+        delay = randInt(180, 520);
+      }
+
+      // tiny added stretch for super-realism: occasional extra long delay after 90%
+      if (currentPercent >= 90 && Math.random() < 0.25) delay += randInt(300, 900);
+
       progressTimer = setTimeout(tick, delay);
     };
 
     tick();
   }
 
+  function chanceOfLongPause(){
+    // Slightly dynamic: more long pauses the closer we are to completion
+    const base = LONG_PAUSE_PROB;
+    const extra = Math.max(0, (currentPercent - 70) / 200); // small extra chance after 70%
+    return base + extra;
+  }
+
   function finishMindRead() {
-    // stop typing timers
     if (typingTimer) { clearTimeout(typingTimer); typingTimer = null; }
     if (progressTimer) { clearTimeout(progressTimer); progressTimer = null; }
 
-    // small delay for drama
+    // final suspense: take a little longer if we slowed down a lot
+    const finalPause = 800 + Math.floor((100 - Math.min(100, currentPercent)) * 8);
     setTimeout(() => {
       overlay.style.display = "none";
       showResult(targetNumber);
       readBtn.disabled = false;
       numInput.disabled = false;
-    }, 420);
+    }, finalPause);
   }
 
   function showResult(n) {
@@ -240,15 +304,7 @@
   }
 
   function randomHint() {
-    const H = [
-      "Analyzing synaptic patterns…",
-      "Tuning into short-term memory…",
-      "Filtering noise from thoughts…",
-      "Matching templates to choices…",
-      "Entangling probability vectors…",
-      "Optimizing guess confidence…"
-    ];
-    return H[randInt(0, H.length - 1)];
+    return HINTS[randInt(0, HINTS.length - 1)];
   }
 
   function randInt(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
@@ -295,7 +351,6 @@
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       if (overlay.style.display === 'flex') {
-        // cancel
         overlay.style.display = 'none';
         readBtn.disabled = false;
         numInput.disabled = false;
