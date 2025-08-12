@@ -23,18 +23,8 @@ mind-reader/ │── index.html   # Main HTML file │── style.css    # CS
 
 ---
 
-## 🚀 How to Run
-1. **Download or Clone** this repository:
-   ```bash
-   git clone https://github.com/yourusername/mind-reader-web.git
-
-2. Open the index.html file in any modern web browser.
-
-
-3. Play and enjoy the mind-reading illusion! 😎
-
-
-
+## 🚀 Demo
+[Click here to play ] https://mohitscodiclab.github.io/Brain-Scan/
 
 ---
 
