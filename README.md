@@ -15,7 +15,6 @@ Built with **HTML, CSS, and Vanilla JavaScript**, featuring smooth animations, s
 ![Screenshot_2025-08-12-15-32-08-18_df198e732186825c8df26e3c5a10d7cd](https://github.com/user-attachments/assets/6a1d8d73-4fa7-473e-b8be-02bb0462ab89)
 
 ![Screenshot_2025-08-12-15-32-20-66_df198e732186825c8df26e3c5a10d7cd](https://github.com/user-attachments/assets/19b18c37-23b4-4302-a7d0-a992816896ba)
-![Screenshot_2025-08-12-15-32-08-18_df198e732186825c8df26e3c5a10d7cd](https://github.com/user-attachments/assets/8c3863e4-f9dc-4839-8e93-acf5a9620daa)
 
 ---
 
