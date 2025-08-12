@@ -121,6 +121,53 @@
   const okBtn = document.getElementById('okBtn');
   const againBtn = document.getElementById('againBtn');
 
+<!-- Inside your existing <script> tag, after const againBtn = ... -->
+const resultPhraseEl = document.querySelector("#resultOverlay .small.muted"); 
+
+
+
+
+
+// Fun / realistic phrases
+const RESULT_PHRASES = [
+  "That was easy 😎",
+  "Light work 💪",
+  "Too smooth 😏",
+  "And I didn’t even break a sweat 🧊",
+  "That’s how it’s done 🔥",
+  "Piece of cake 🍰",
+  "Call me the master 🧠",
+  "Boom. Nailed it. 🎯",
+  "Did someone say challenge? 😂",
+  "Not bad, huh? 😉",
+  "I could do this all day 🛡️",
+  "Another one bites the dust 🎵",
+  "No cap, I’m built different 🏆",
+  "Effortless ✨",
+  "Watch and learn 📚",
+  "I make it look easy 😏",
+  "Just warming up 🔥",
+  "The prophecy was true 🪄",
+  "I run this game 🖤",
+  "You blinked, I finished 👀"
+];
+
+let lastResultPhrase = null;
+function randomResultPhrase() {
+  let phrase;
+  do {
+    phrase = RESULT_PHRASES[randInt(0, RESULT_PHRASES.length - 1)];
+  } while (phrase === lastResultPhrase && RESULT_PHRASES.length > 1);
+  lastResultPhrase = phrase;
+  return phrase;
+}
+
+
+
+
+
+
+
   // more dramatic messages including quantum/crypto lines
   const MESSAGES = [
     "Reading your brain waves...",
@@ -295,9 +342,11 @@
   }
 
   function showResult(n) {
-    resultNumber.textContent = String(n);
-    resultOverlay.style.display = "flex";
-  }
+  resultNumber.textContent = String(n);
+  resultPhraseEl.textContent = randomResultPhrase();
+  resultOverlay.style.display = "flex";
+}
+
 
   function hideResult() {
     resultOverlay.style.display = "none";
@@ -315,7 +364,7 @@
     if (!v) { alert("Type a number between 1 and 100 (this is just for fun)."); return; }
     const n = Number(v);
     if (!Number.isInteger(n)) { alert("Please enter a valid integer."); return; }
-    if (n < 1 || n > 100) { alert("Andha hai kaya laude...."); return; }
+    if (n < 1 || n > 100) { alert("ka raja ankhiya main laad pele ho kaya...."); return; }
     startMindRead(n);
   });
 
